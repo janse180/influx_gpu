@@ -1,22 +1,17 @@
 #!/usr/bin/python
-import csv
 import subprocess
 
 output = []
 
-def parse_csv(file):
+def parse_smi(smi):
 
-    #data = []
-    #csv_f = csv.reader(file)
-    #for row in csv_f:
-     #   data.append(row)
-
-    data = [line.split(',') for line in file.splitlines()]
+    data = [line.split(',') for line in smi.splitlines()]
 
     headers = sanitize(data.pop(0))
 
+    #The number of tags.
     tag_count = 3
-    #Tags
+
     for gpu_object in data:
         tags = sanitize(gpu_object[:tag_count])
         metrics = gpu_object[tag_count:]
@@ -64,13 +59,13 @@ if __name__ == '__main__':
                         "power.draw,clocks.sm,"
                         "clocks.mem,"
                         "clocks.gr")
-
     nvidia_smi_format = "--format=csv,nounits"
+
     try:
         smi_output = subprocess.check_output([nvidia_smi_path, nvidia_smi_query, nvidia_smi_format])
     except subprocess.CalledProcessError as e:
         raise RuntimeError("command '{}' return with error (code {}): {}".format(e.cmd, e.returncode, e.output))
-    parse_csv(smi_output)
+    parse_smi(smi_output)
 
     for string in output:
         print(string)
