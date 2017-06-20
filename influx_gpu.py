@@ -58,7 +58,8 @@ if __name__ == '__main__':
                         "utilization.memory,"
                         "power.draw,clocks.sm,"
                         "clocks.mem,"
-                        "clocks.gr")
+                        "clocks.gr,"
+                        "fan.speed")
     nvidia_smi_format = "--format=csv,nounits"
 
     try:
